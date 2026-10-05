@@ -294,7 +294,8 @@ class TestCodeLocalCommands(CodeCase):
     def test_brief_carries_contract_format_inputs_and_format_reference(self):
         job_id, _ = self.code_project()
         path, text = write_brief(self.root, job_id)
-        assert path == self.root / "work/code_briefs/FLOW_U1.md"
+        # Compare files, not spellings: Windows may resolve 8.3 short names in temp paths.
+        assert path.samefile(self.root / "work/code_briefs/FLOW_U1.md")
         for expected in (
             "Render this unit locally",
             "320x180 at 25 fps: 50 frames covering 2 s",
