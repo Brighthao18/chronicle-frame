@@ -48,12 +48,13 @@ package names, and the `hsd` command. **ChronicleFrame** is the public repositor
 needs FFmpeg on your `PATH` and the optional media dependencies.
 
 ```sh
-git clone https://github.com/Brighthao18/chronicle-frame.git
-cd chronicle-frame
+git clone https://github.com/Brighthao18/chronicle-frame.git historical-shortfilm-director
+cd historical-shortfilm-director
 python -m venv .venv
 ```
 
-Activate the environment:
+The clone directory matches the declared Skill name, as required by structural validation.
+The public repository remains ChronicleFrame. Activate the environment:
 
 | Shell | Command |
 | --- | --- |

@@ -47,11 +47,12 @@ ChronicleFrame 把历史研究与可复查的短片制作流程连接起来。Ag
 并使其位于 `PATH`，再安装可选媒体依赖。
 
 ```sh
-git clone https://github.com/Brighthao18/chronicle-frame.git
-cd chronicle-frame
+git clone https://github.com/Brighthao18/chronicle-frame.git historical-shortfilm-director
+cd historical-shortfilm-director
 python -m venv .venv
 ```
 
+克隆目录与 Skill 声明名称一致，以通过结构校验；公开仓库仍名为 ChronicleFrame。
 激活环境：
 
 | 终端 | 命令 |
