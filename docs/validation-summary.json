@@ -133,7 +133,8 @@
       }
     ],
     "cloud_provider_tests": "NOT_RUN",
-    "github_actions_online": "NOT_RUN"
+    "github_actions_online": "PASS",
+    "isolated_developer_install_without_opencv": "PASS: 54 fast tests; 2 optional media modules skipped"
   },
   "security": {
     "baseline_classified_findings": 10,
@@ -156,5 +157,64 @@
   "refactor_baseline_internal_version": "3.2.1",
   "public_release_version": "3.3.0",
   "validation_scope": "Local checks before GitHub publication. Online CI status is reported by the public Actions page.",
-  "repository": "https://github.com/Brighthao18/chronicle-frame"
+  "repository": "https://github.com/Brighthao18/chronicle-frame",
+  "publication": {
+    "repository": "https://github.com/Brighthao18/chronicle-frame",
+    "version": "3.3.0",
+    "validated_runtime_commit": "043c810777cd22f61c982245ca77c5830abc0caa",
+    "ci_runs": [
+      {
+        "run_id": "37298784798",
+        "status": "PASS",
+        "commit": "043c810777cd22f61c982245ca77c5830abc0caa",
+        "url": "https://github.com/Brighthao18/chronicle-frame/actions/runs/37298784798",
+        "jobs": [
+          {
+            "name": "wheel",
+            "status": "success"
+          },
+          {
+            "name": "fast (ubuntu-latest, 3.13)",
+            "status": "success"
+          },
+          {
+            "name": "fast (ubuntu-latest, 3.10)",
+            "status": "success"
+          },
+          {
+            "name": "fast (ubuntu-latest, 3.12)",
+            "status": "success"
+          },
+          {
+            "name": "fast (windows-latest, 3.10)",
+            "status": "success"
+          },
+          {
+            "name": "fast (windows-latest, 3.12)",
+            "status": "success"
+          },
+          {
+            "name": "fast (windows-latest, 3.13)",
+            "status": "success"
+          }
+        ]
+      },
+      {
+        "run_id": "37298788454",
+        "status": "PASS",
+        "commit": "043c810777cd22f61c982245ca77c5830abc0caa",
+        "url": "https://github.com/Brighthao18/chronicle-frame/actions/runs/37298788454",
+        "jobs": [
+          {
+            "name": "local-media",
+            "status": "success"
+          }
+        ]
+      }
+    ],
+    "public_readme_clone_smoke": "PASS",
+    "private_vulnerability_reporting": "ENABLED",
+    "python_package_registry": "NOT_PUBLISHED",
+    "cloud_calls": 0
+  }
 }

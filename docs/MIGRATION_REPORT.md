@@ -8,6 +8,9 @@ The validation tables below record the local refactor checkpoint, before GitHub 
 Online results are available through the repository's Actions page; no historical release
 or Git history has been reconstructed.
 
+The completed publication checks are recorded separately in
+[PUBLICATION_REPORT.md](PUBLICATION_REPORT.md), including the passing cross-platform CI.
+
 ## Scope and preservation
 
 Created a separate public-ready checkout on `refactor/public-oss`. The supplied source had no

@@ -219,6 +219,10 @@ the retained **41-method legacy self-test suite**. The replacement suite maps al
 public interface. These counts overlap rather than representing 101 distinct behaviors.
 [Coverage map](docs/test-coverage-mapping.json) · [Migration report](docs/MIGRATION_REPORT.md).
 
+The public [Windows/Ubuntu Python matrix and wheel checks](https://github.com/Brighthao18/chronicle-frame/actions/runs/37298784798)
+and [offline media workflow](https://github.com/Brighthao18/chronicle-frame/actions/runs/37298788454)
+also passed. [Publication validation](docs/PUBLICATION_REPORT.md) records their scope.
+
 Default tests and CI exclude slow media and live providers. Install media extras
 and FFmpeg, then run `python -m pytest -m slow` for real local encoding. A separate
 manual workflow runs this layer. No live-provider tests are implemented or claimed

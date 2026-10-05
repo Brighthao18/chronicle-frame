@@ -203,6 +203,10 @@ python -m ruff format --check .
 这些数量存在重叠，不应相加当作 101 项独立行为。
 [测试对应表](docs/test-coverage-mapping.json) · [迁移报告](docs/MIGRATION_REPORT.md)。
 
+公开运行的 [Windows/Ubuntu Python 矩阵与安装包检查](https://github.com/Brighthao18/chronicle-frame/actions/runs/37298784798)
+及[离线媒体工作流](https://github.com/Brighthao18/chronicle-frame/actions/runs/37298788454)也已通过。
+[发布验证记录](docs/PUBLICATION_REPORT.md)说明具体范围。
+
 默认测试和 CI 不运行慢速媒体或在线供应商测试。安装媒体依赖和 FFmpeg 后，用
 `python -m pytest -m slow` 检查真实本地编码；另有手动触发的媒体工作流。
 目前没有已实现或宣称运行过的在线供应商测试。未来必须用 `live` 标记和 `--live`
