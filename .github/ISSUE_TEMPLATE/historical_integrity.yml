@@ -1,0 +1,22 @@
+name: Historical integrity
+description: Unsupported claims, incorrect evidence classification or misleading reconstruction
+title: "[Historical integrity] "
+body:
+  - type: textarea
+    id: claim
+    attributes:
+      label: Isolated claim and affected file
+      description: Include allowed wording and whether it is fact, inference, restoration or reconstruction.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Source evidence and disagreement
+      description: Public citations or a safe summary only; no private reports or copyrighted scans.
+    validations:
+      required: true
+  - type: textarea
+    id: correction
+    attributes:
+      label: Suggested correction or unresolved question

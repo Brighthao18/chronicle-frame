@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "files_scanned": 209,
+  "findings": [],
+  "tracked_cache_check": "PASS",
+  "tracked_caches": [],
+  "benign_runtime_security_term_lines": 169,
+  "term_classification": "Runtime attempt IDs, authorization schemas, synthetic fixtures and security guidance are not embedded account credentials",
+  "history_scope": "Working tree/index only. No Git configuration or Git history inspected; no history-clean claim.",
+  "limitations": "Pattern-based static review cannot establish absence of every secret or vulnerability"
+}

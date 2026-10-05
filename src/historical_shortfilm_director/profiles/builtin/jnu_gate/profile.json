@@ -1,0 +1,45 @@
+{
+  "name": "jnu_gate",
+  "aliases": [
+    "jnu120"
+  ],
+  "description": "Advanced Jinan University gate-motif example. Example constraints are not current competition rules.",
+  "templates": {
+    "02b_gate_creative_lab.md": "# 《门外，是四海》 Creative Lab\n\n## Stable factual spine / evidence constraints\n\n## Divergence matrix\n\n| Variant | Emotional entry | Narrative mechanism | Visual mechanism | Opening image | Turn | Ending transformation | Evidence burden | AI/edit risk | Why genuinely different |\n|---|---|---|---|---|---|---|---|---|---|\n\n## Creative Director critique\n\n## Convergence / selected mechanism stack\n\n## Rejected clichés / forbidden fallback ideas\n",
+    "03b_gate_motif_graph.md": "# 《门外，是四海》 Asset Relationship / Motif Graph\n\n## Asset nodes\n\n| Asset ID | What it shows | Era/location | Evidence status | Visual affordances |\n|---|---|---|---|---|\n\n## Relationships\n\n| From | To | Relation type | Observable connection | Possible transition / composition | Evidence risk | Use? |\n|---|---|---|---|---|---|---|\n\n## Gate motif evolution\n\n`physical gate -> threshold -> migration -> persistence -> rebuilding -> connection / outward direction`\n\n## Relationships selected for each sequence\n",
+    "10b_gate_director_review.md": "# 《门外，是四海》 Director Review\n\n## Opening / ending pair (15)\n\n## Historical evidence (20)\n\n## Multi-asset synthesis (15)\n\n## Narrative causality (15)\n\n## Gate motif development (10)\n\n## Motion / edit / sound (10)\n\n## Generation controllability (10)\n\n## Competition finish (5)\n\n## Fatal checks\n- [ ] no unsupported history\n- [ ] reconstruction not presented as archive\n- [ ] verified Chinese signage preserved\n- [ ] number of gates not forced against evidence\n\n## Top 3 redesign risks\n1.\n2.\n3.\n"
+  },
+  "constraints": {
+    "duration_ceiling_seconds": 300,
+    "max_duration_seconds": 300,
+    "preferred_orientation": "landscape"
+  },
+  "metadata": {
+    "project_mode": "door-outside-four-seas",
+    "recommended_target_runtime_seconds": [
+      210,
+      240
+    ]
+  },
+  "routing": {
+    "R-D": "OCCLUSION_2STEP"
+  },
+  "qc": {
+    "protected_asset_ids": [
+      "A089",
+      "A090",
+      "A091",
+      "A092",
+      "A176",
+      "A177",
+      "A184"
+    ],
+    "avoid_repeated_drift_ids": [
+      "A089",
+      "A090",
+      "A091",
+      "A092"
+    ],
+    "prefer_deterministic_routes": true
+  }
+}

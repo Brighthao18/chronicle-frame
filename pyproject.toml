@@ -1,0 +1,71 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "historical-shortfilm-director"
+dynamic = ["version"]
+description = "ChronicleFrame: an evidence-grounded Agent Skill and production runtime for historical short films."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{name = "historical-shortfilm-director contributors"}]
+dependencies = []
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/Brighthao18/chronicle-frame"
+Repository = "https://github.com/Brighthao18/chronicle-frame"
+Documentation = "https://github.com/Brighthao18/chronicle-frame/blob/main/README.md"
+Issues = "https://github.com/Brighthao18/chronicle-frame/issues"
+Changelog = "https://github.com/Brighthao18/chronicle-frame/blob/main/CHANGELOG.md"
+
+[project.optional-dependencies]
+media = ["Pillow>=10", "numpy>=1.26", "opencv-python-headless>=4.8"]
+test = ["pytest>=8", "Pillow>=10", "PyYAML>=6"]
+dev = ["pytest>=8", "Pillow>=10", "PyYAML>=6", "ruff>=0.11", "build>=1.2"]
+
+[project.scripts]
+hsd = "historical_shortfilm_director.cli:main"
+historical-shortfilm-director = "historical_shortfilm_director.cli:main"
+
+[tool.setuptools.dynamic]
+version = {file = "VERSION"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+historical_shortfilm_director = ["data/*.json", "profiles/builtin/*/*.json", "providers/flow/*.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests/unit", "tests/integration"]
+addopts = "-m 'not slow and not live'"
+markers = [
+  "slow: real local media encoding (requires media extras and FFmpeg)",
+  "live: explicit live provider calls; opt-in only and may consume paid credits",
+]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+exclude = ["work", "outputs", "build", "dist", ".venv", "*.egg-info"]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]
+ignore = ["E741"]
+
+[tool.ruff.lint.per-file-ignores]
+"scripts/*.py" = ["E402"]
+"tools/migrations/legacy/*.py" = ["E402"]
+"src/historical_shortfilm_director/_command.py" = ["E402"]
+"src/historical_shortfilm_director/runtime/common.py" = ["F401"]
+"tests/support/fixtures.py" = ["F401"]

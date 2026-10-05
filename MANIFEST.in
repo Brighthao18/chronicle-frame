@@ -1,0 +1,15 @@
+include VERSION LICENSE README.md README.zh-CN.md SKILL.md pyproject.toml
+include CONTRIBUTING.md SECURITY.md CODE_OF_CONDUCT.md CHANGELOG.md requirements.txt .gitignore
+recursive-include .github *.yml *.md
+recursive-include assets *.svg
+recursive-include src *.py *.json
+recursive-include scripts *.py
+recursive-include references *.md
+recursive-include examples *.md *.py *.json
+recursive-include tools *.py *.md
+recursive-include tests *.py
+recursive-include docs *.md *.json
+global-exclude *.pyc *.pyo
+prune work
+prune outputs
+prune .git

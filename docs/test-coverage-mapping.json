@@ -1,0 +1,248 @@
+[
+  {
+    "original_suite": "self_test_v31",
+    "method": "test_pending_plans_compile_without_per_row_human_approval",
+    "new_file": "tests/unit/test_runtime_regressions.py",
+    "layer": "unit"
+  },
+  {
+    "original_suite": "self_test_v31",
+    "method": "test_missing_edit_reference_is_held",
+    "new_file": "tests/unit/test_runtime_regressions.py",
+    "layer": "unit"
+  },
+  {
+    "original_suite": "self_test_v31",
+    "method": "test_gates_bind_to_actual_files",
+    "new_file": "tests/unit/test_runtime_regressions.py",
+    "layer": "unit"
+  },
+  {
+    "original_suite": "self_test_v31",
+    "method": "test_optional_g3_and_preserved_nonlocal_detection",
+    "new_file": "tests/unit/test_runtime_regressions.py",
+    "layer": "unit"
+  },
+  {
+    "original_suite": "self_test_v31",
+    "method": "test_cycle_is_rejected",
+    "new_file": "tests/unit/test_runtime_regressions.py",
+    "layer": "unit"
+  },
+  {
+    "original_suite": "self_test_v31",
+    "method": "test_claim_is_durable_and_does_not_repeat",
+    "new_file": "tests/unit/test_runtime_regressions.py",
+    "layer": "unit"
+  },
+  {
+    "original_suite": "self_test_v31",
+    "method": "test_receipt_required_and_fake_bytes_rejected",
+    "new_file": "tests/unit/test_runtime_regressions.py",
+    "layer": "unit"
+  },
+  {
+    "original_suite": "self_test_v31",
+    "method": "test_exact_model_mismatch_is_rejected",
+    "new_file": "tests/unit/test_runtime_regressions.py",
+    "layer": "unit"
+  },
+  {
+    "original_suite": "self_test_v31",
+    "method": "test_no_semantic_review_no_auto_acceptance",
+    "new_file": "tests/unit/test_runtime_regressions.py",
+    "layer": "unit"
+  },
+  {
+    "original_suite": "self_test_v31",
+    "method": "test_changed_reviewed_candidate_rejected",
+    "new_file": "tests/unit/test_runtime_regressions.py",
+    "layer": "unit"
+  },
+  {
+    "original_suite": "self_test_v31",
+    "method": "test_hero_requires_selected_hash_and_board_escapes",
+    "new_file": "tests/unit/test_runtime_regressions.py",
+    "layer": "unit"
+  },
+  {
+    "original_suite": "self_test_v31",
+    "method": "test_two_distinct_failures_require_reroute",
+    "new_file": "tests/unit/test_runtime_regressions.py",
+    "layer": "unit"
+  },
+  {
+    "original_suite": "self_test_v31",
+    "method": "test_budget_survives_job_revision",
+    "new_file": "tests/unit/test_runtime_regressions.py",
+    "layer": "unit"
+  },
+  {
+    "original_suite": "self_test_v31",
+    "method": "test_source_change_invalidates_accepted_and_downstream",
+    "new_file": "tests/unit/test_runtime_regressions.py",
+    "layer": "unit"
+  },
+  {
+    "original_suite": "self_test_v31",
+    "method": "test_capability_staleness_and_output_limit",
+    "new_file": "tests/unit/test_runtime_regressions.py",
+    "layer": "unit"
+  },
+  {
+    "original_suite": "self_test_v31",
+    "method": "test_ambiguous_timeout_cannot_release",
+    "new_file": "tests/unit/test_runtime_regressions.py",
+    "layer": "unit"
+  },
+  {
+    "original_suite": "self_test_v31",
+    "method": "test_sealed_overlay_exact_non_destructive_and_bounds",
+    "new_file": "tests/unit/test_runtime_regressions.py",
+    "layer": "unit"
+  },
+  {
+    "original_suite": "self_test_v31",
+    "method": "test_paths_and_nonempty_initializer",
+    "new_file": "tests/unit/test_runtime_regressions.py",
+    "layer": "unit"
+  },
+  {
+    "original_suite": "self_test_v31",
+    "method": "test_subtitle_rollover_and_mixed_fonts",
+    "new_file": "tests/unit/test_runtime_regressions.py",
+    "layer": "unit"
+  },
+  {
+    "original_suite": "self_test_v31",
+    "method": "test_runtime_cli_roundtrip",
+    "new_file": "tests/unit/test_runtime_regressions.py",
+    "layer": "unit"
+  },
+  {
+    "original_suite": "self_test_v31",
+    "method": "test_g3_skip_invalidates_when_escalation_added",
+    "new_file": "tests/unit/test_runtime_regressions.py",
+    "layer": "unit"
+  },
+  {
+    "original_suite": "self_test_v31",
+    "method": "test_overlay_proof_required_for_exact_job",
+    "new_file": "tests/unit/test_runtime_regressions.py",
+    "layer": "unit"
+  },
+  {
+    "original_suite": "self_test_v31",
+    "method": "test_flow_route_duration_and_ingredients_compiler",
+    "new_file": "tests/unit/test_runtime_regressions.py",
+    "layer": "unit"
+  },
+  {
+    "original_suite": "self_test_v31",
+    "method": "test_render_push_and_pan_change_pixels",
+    "new_file": "tests/integration/test_runtime_media.py",
+    "layer": "integration"
+  },
+  {
+    "original_suite": "self_test_v31",
+    "method": "test_flow_compilation_and_end_to_end_assembly_audio",
+    "new_file": "tests/integration/test_runtime_media.py",
+    "layer": "integration"
+  },
+  {
+    "original_suite": "self_test_v32",
+    "method": "test_preview_rejects_stale_reviewed_candidate",
+    "new_file": "tests/unit/test_graph_regressions.py",
+    "layer": "unit"
+  },
+  {
+    "original_suite": "self_test_v32",
+    "method": "test_preview_rejects_changed_registered_producer",
+    "new_file": "tests/unit/test_graph_regressions.py",
+    "layer": "unit"
+  },
+  {
+    "original_suite": "self_test_v32",
+    "method": "test_graph_compiles_consistent_trim_and_preview",
+    "new_file": "tests/unit/test_graph_regressions.py",
+    "layer": "unit"
+  },
+  {
+    "original_suite": "self_test_v32",
+    "method": "test_graph_recompile_is_idempotent_and_keeps_active_receipt",
+    "new_file": "tests/unit/test_graph_regressions.py",
+    "layer": "unit"
+  },
+  {
+    "original_suite": "self_test_v32",
+    "method": "test_graph_manual_plan_edits_are_not_overwritten",
+    "new_file": "tests/unit/test_graph_regressions.py",
+    "layer": "unit"
+  },
+  {
+    "original_suite": "self_test_v32",
+    "method": "test_graph_rejects_unknown_fields_and_nonfinite_timing",
+    "new_file": "tests/unit/test_graph_regressions.py",
+    "layer": "unit"
+  },
+  {
+    "original_suite": "self_test_v32",
+    "method": "test_graph_rejects_bad_trims_missing_joins_and_cycles",
+    "new_file": "tests/unit/test_graph_regressions.py",
+    "layer": "unit"
+  },
+  {
+    "original_suite": "self_test_v32",
+    "method": "test_graph_exact_seam_is_not_just_a_label",
+    "new_file": "tests/unit/test_graph_regressions.py",
+    "layer": "unit"
+  },
+  {
+    "original_suite": "self_test_v32",
+    "method": "test_graph_invalid_text_leaves_existing_plans_intact",
+    "new_file": "tests/unit/test_graph_regressions.py",
+    "layer": "unit"
+  },
+  {
+    "original_suite": "self_test_v32",
+    "method": "test_animatic_missing_frame_does_not_export_partial",
+    "new_file": "tests/unit/test_graph_regressions.py",
+    "layer": "unit"
+  },
+  {
+    "original_suite": "self_test_v32",
+    "method": "test_dispatch_detects_transitive_stale_source_without_sync",
+    "new_file": "tests/unit/test_graph_regressions.py",
+    "layer": "unit"
+  },
+  {
+    "original_suite": "self_test_v32",
+    "method": "test_dispatch_detects_changed_parent_contract_without_sync",
+    "new_file": "tests/unit/test_graph_regressions.py",
+    "layer": "unit"
+  },
+  {
+    "original_suite": "self_test_v32",
+    "method": "test_preview_resume_rejects_same_duration_swapped_picture",
+    "new_file": "tests/integration/test_animatic_media.py",
+    "layer": "integration"
+  },
+  {
+    "original_suite": "self_test_v32",
+    "method": "test_animatic_real_encode_audio_and_no_gate_mutation",
+    "new_file": "tests/integration/test_animatic_media.py",
+    "layer": "integration"
+  },
+  {
+    "original_suite": "self_test_v32",
+    "method": "test_animatic_changed_inputs_make_new_version",
+    "new_file": "tests/integration/test_animatic_media.py",
+    "layer": "integration"
+  },
+  {
+    "original_suite": "self_test_v32",
+    "method": "test_new_cli_commands_and_documented_example",
+    "new_file": "tests/integration/test_animatic_media.py",
+    "layer": "integration"
+  }
+]

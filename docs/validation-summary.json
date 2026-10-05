@@ -1,0 +1,160 @@
+{
+  "date": "2026-10-05",
+  "canonical_internal_version": "3.3.0",
+  "branch": "main (publication); refactor/public-oss (preserved refactor branch)",
+  "baseline": {
+    "legacy_behavior_tests": 41,
+    "result": "PASS"
+  },
+  "current": {
+    "fast_tests": 54,
+    "fast_result": "PASS",
+    "real_media_tests": 6,
+    "real_media_result": "PASS",
+    "retained_legacy_tests": 41,
+    "legacy_result": "PASS",
+    "structural_skill": "PASS",
+    "creator_structural_validator": "PASS",
+    "python_compilation": "PASS",
+    "python_3_10_syntax_only": "PASS",
+    "ruff_lint": "PASS",
+    "ruff_format": "PASS",
+    "fresh_wheel_install_no_dependencies": "PASS",
+    "generic_without_historical_profile": "PASS",
+    "historical_profile_from_wheel": "PASS",
+    "minimal_example": "PASS",
+    "readme_command_checks": [
+      {
+        "command": "hsd --help",
+        "exit_code": 0,
+        "status": "PASS"
+      },
+      {
+        "command": "hsd --version",
+        "exit_code": 0,
+        "status": "PASS"
+      },
+      {
+        "command": "hsd doctor",
+        "exit_code": 0,
+        "status": "PASS"
+      },
+      {
+        "command": "hsd validate work/demo",
+        "exit_code": 0,
+        "status": "PASS"
+      },
+      {
+        "command": "hsd prepare work/demo",
+        "exit_code": 0,
+        "status": "PASS"
+      },
+      {
+        "command": "hsd status work/demo",
+        "exit_code": 0,
+        "status": "PASS"
+      },
+      {
+        "command": "hsd next work/demo",
+        "exit_code": 0,
+        "status": "PASS"
+      },
+      {
+        "command": "hsd qc work/demo",
+        "exit_code": 0,
+        "status": "PASS"
+      },
+      {
+        "command": "hsd animatic work/demo",
+        "exit_code": 0,
+        "status": "PASS"
+      },
+      {
+        "command": "hsd qc work/demo --media",
+        "exit_code": 0,
+        "status": "PASS"
+      },
+      {
+        "command": "hsd qc work/demo --readiness (unfinished synthetic planning)",
+        "exit_code": 1,
+        "status": "PASS"
+      },
+      {
+        "command": "hsd assemble <project> --manifest <local-preview-manifest> --output exports/demo_picture.mp4 --width 320 --height 180",
+        "exit_code": 0,
+        "status": "PASS"
+      },
+      {
+        "command": "hsd assemble <project> --manifest <local-preview-manifest> --output exports/demo_picture.mp4 --width 320 --height 180 --execute",
+        "exit_code": 0,
+        "status": "PASS"
+      },
+      {
+        "command": "hsd init --title \"Archive threshold\" --profile generic --dir <new-dir>",
+        "exit_code": 0,
+        "status": "PASS"
+      },
+      {
+        "command": "hsd init --title \"Gate motif study\" --profile jnu_gate --dir <new-dir>",
+        "exit_code": 0,
+        "status": "PASS"
+      },
+      {
+        "command": "python scripts/validate_skill.py",
+        "exit_code": 0,
+        "status": "PASS"
+      },
+      {
+        "command": "hsd validate --skill .",
+        "exit_code": 0,
+        "status": "PASS"
+      },
+      {
+        "command": "python tools/check_imports.py",
+        "exit_code": 0,
+        "status": "PASS"
+      },
+      {
+        "command": "python -m compileall -q src scripts tools tests",
+        "exit_code": 0,
+        "status": "PASS"
+      },
+      {
+        "command": "runtime sync/next/claim/receipt/ingest/review/accept with synthetic output",
+        "exit_code": 0,
+        "status": "PASS",
+        "evidence": "Preserved test_runtime_cli_roundtrip"
+      },
+      {
+        "command": "registered-clip assembly, ASS subtitles and G4-bound final audio mix",
+        "exit_code": 0,
+        "status": "PASS",
+        "evidence": "Preserved test_flow_compilation_and_end_to_end_assembly_audio; synthetic local media, not live generation"
+      }
+    ],
+    "cloud_provider_tests": "NOT_RUN",
+    "github_actions_online": "NOT_RUN"
+  },
+  "security": {
+    "baseline_classified_findings": 10,
+    "tree_pattern_findings": 0,
+    "actual_embedded_credentials_found": 0,
+    "git_history": "NOT_SCANNED; original source had no .git history",
+    "git_configuration": "NOT_READ",
+    "scope": "Static working tree and index; best-effort patterns, not a universal guarantee"
+  },
+  "preservation": {
+    "original_files_hash_verified_unchanged": 90,
+    "original_cache_files_excluded_from_delivery": 6,
+    "mit_license": "UNCHANGED"
+  },
+  "environment": "Windows / Python 3.12. Tests and build dependencies installed only in an isolated task environment.",
+  "ci_configured": [
+    "Windows/Ubuntu Python 3.10, 3.12, 3.13 fast matrix",
+    "manual Ubuntu Python 3.12 local-media workflow"
+  ],
+  "refactor_baseline_internal_version": "3.2.1",
+  "public_release_version": "3.3.0",
+  "validation_scope": "Local checks before GitHub publication. Online CI status is reported by the public Actions page.",
+  "repository": "https://github.com/Brighthao18/chronicle-frame"
+}

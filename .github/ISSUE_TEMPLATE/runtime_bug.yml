@@ -1,0 +1,32 @@
+name: Runtime or generation handoff bug
+description: Graph, state, receipts, local media or provider handoff behavior
+title: "[Runtime] "
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Version and Python/operating system
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal synthetic reproduction
+      description: Command, expected/actual behavior and redacted state; never include credentials or sessions.
+    validations:
+      required: true
+  - type: dropdown
+    id: execution
+    attributes:
+      label: Execution evidence
+      options:
+        - Offline only
+        - Actually executed live, with redacted evidence
+        - Planned or submitted; result unverified
+    validations:
+      required: true
+  - type: textarea
+    id: receipts
+    attributes:
+      label: Relevant hashes and redacted receipt structure
+      description: Remove private URLs, receipt handles, personal paths and account data.

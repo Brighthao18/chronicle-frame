@@ -1,0 +1,2 @@
+# Legacy convenience entry; install the project with optional media dependencies.
+.[media]

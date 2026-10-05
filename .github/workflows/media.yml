@@ -1,0 +1,24 @@
+name: Offline real-media integration
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  local-media:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+      - run: python -m pip install -e ".[dev,media]"
+      - run: python -m pytest -m slow
+      - run: python scripts/self_test_v32.py --work-dir work/legacy-media
+      - run: python examples/minimal/create_demo.py work/demo
+      - run: hsd validate work/demo
+      - run: hsd prepare work/demo
+      - run: hsd animatic work/demo
+      - run: hsd qc work/demo --media

@@ -1,0 +1,33 @@
+{
+  "capability_snapshot": "verify-current-Flow-UI-before-final-generation",
+  "prompt_language": "English",
+  "allowed_duration_candidates_seconds": [],
+  "duration_is_model_dependent": true,
+  "reference_limit": "model/mode-dependent; verify current UI",
+  "preferred_tools": [
+    "Ingredients",
+    "Characters",
+    "Frames to Video",
+    "Extend",
+    "Scenebuilder",
+    "Flow Agent"
+  ],
+  "historical_audio_default": "VO_POST + AMBIENCE_SFX_OPTIONAL",
+  "prompt_blueprints": "04c_flow_prompt_blueprints.md",
+  "frame_asset_plan": "03d_frame_asset_plan.md",
+  "shot_endpoint_plan": "05f_shot_endpoint_plan.md",
+  "join_contract_plan": "05h_join_contracts.md",
+  "film_opening_ending_plan": "05a_film_opening_ending.md",
+  "endpoint_reviewer": "scripts/review_flow_endpoints.py",
+  "endpoint_authority": "per-shot; film opening/ending is separate",
+  "prompt_compiler": "scripts/compile_flow_prompts.py",
+  "script_reviewer": "scripts/review_flow_script.py",
+  "prompt_linter": "scripts/lint_flow_prompts.py",
+  "image_job_compiler": "scripts/compile_image25_jobs.py",
+  "join_contract_reviewer": "scripts/review_join_contracts.py",
+  "assembly_compiler": "scripts/compile_direct_assembly.py",
+  "picture_master_assembler": "scripts/assemble_direct.py",
+  "flow_job_compiler": "scripts/compile_flow_jobs.py",
+  "flow_operator_pack": "scripts/compile_flow_operator_pack.py",
+  "media_auto_qc": "scripts/auto_qc_media.py"
+}
