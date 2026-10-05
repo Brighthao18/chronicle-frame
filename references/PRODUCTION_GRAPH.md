@@ -82,6 +82,13 @@ Mode-specific fields: `start`, `end`, `ingredients`, `source_video`. Optional: `
 `preview_frame`, `preview_motion`. `source_video` may name a registered external
 clip or an earlier unit; generated predecessors must be accepted first.
 
+`mode: "CODE"` marks a unit that Claude Code (or another author) renders locally from a
+scene program: it still needs `action` and `camera`, lists every asset the program may read
+in `ingredients`, treats `start`/`end` as endpoint contracts and accepts no `source_video`
+or incoming `FLOW_EXTEND`. The optional top-level `render` object (`width`, `height`, `fps`;
+default 1920x1080 at 25 fps) fixes the format of every `CODE` unit.
+[Claude Code video](providers/CLAUDE_CODE_VIDEO.md) describes the route.
+
 Join essentials: `id`, `from`, `to`, `type`, `fallback`. Optional: `seam`, `exit`,
 `entry`, `direction`, `handles`, `reset`, `audio`, `overlay`. Every pair of adjacent
 units needs an explicit join. EXACT_SEAM requires the same previous end/next start ID.

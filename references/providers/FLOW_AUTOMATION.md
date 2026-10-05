@@ -15,7 +15,7 @@ hardcoded selector robot; do not invent private endpoints or infer hidden DOM st
 | Repeated entities with flexible layout | INGREDIENTS | Named image/video refs and their roles |
 | Repair an otherwise good clip | OMNI_EDIT | Actual edit feature, source clip and segment |
 | No exact anchor required | T2V | Same source/evidence and motion review |
-| Exact graphic/source-plane movement | Code route | Deterministic motion and typography |
+| Exact graphic/source-plane movement | `CODE` unit ([Claude Code video](CLAUDE_CODE_VIDEO.md)) | Deterministic motion and typography |
 
 This is a purpose-based choice, not a mandatory order that always forces Frames.
 Scene/era/identity resets use a designed cut, occlusion, graphic transition or bridge.

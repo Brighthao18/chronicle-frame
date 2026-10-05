@@ -201,3 +201,21 @@ If a human operates Flow because browser tools are unavailable, record Flow capa
 as `execution:"operator"` using the observed/reported actual settings, not as automated
 browser access. Reserve the specific job, supply its operator card, then record the
 real returned asset/receipt and ingest it through the same review path.
+
+## Code-rendered units
+
+Provider `code` jobs (graph `mode: "CODE"`) skip the external handoff. The runtime is the
+renderer, so it writes the receipt from what it observed:
+
+```text
+hsd code probe "<project>"
+hsd code brief "<project>" FLOW_U4
+hsd code preview "<project>" FLOW_U4 --program programs/U4.scene.json
+hsd code render "<project>" FLOW_U4 --program programs/U4.scene.json
+```
+
+`render` renders and verifies the whole clip before it claims, so a broken program costs no
+attempt. A valid output is claimed (or fulfils an attempt claimed earlier), receipted as
+`local-render:<render_id>` with `actual_mode: "CODE"` and ingested. Review it with all eight
+video checks and accept it as above. Never write a receipt for a code job by hand. Details:
+[Claude Code video](providers/CLAUDE_CODE_VIDEO.md).

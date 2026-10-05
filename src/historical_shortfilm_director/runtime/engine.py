@@ -30,6 +30,11 @@ from historical_shortfilm_director.providers.capabilities import capability
 
 STATE = "06t_execution_state.json"
 QUEUES = [("06i_image25_job_queue.json", "image"), ("06o_flow_job_queue.json", "flow")]
+VIDEO_PROVIDERS = {"flow", "video", "code"}
+NEXT_STEP = {
+    "code": "Author a scene for this contract, then run `hsd code render` with this job; it records the receipt and ingests the output. Do not hand code jobs to an external generator.",
+}
+HANDOFF_STEP = "Execute actual agent image tool or observed Flow UI; record receipt; import real returned file. Do not auto-resubmit after timeout."
 CHECKS = [
     "contract",
     "identity_geometry",
@@ -307,6 +312,7 @@ def next_jobs(root):
         out.append(
             {
                 "job_id": k,
+                "provider": j["provider"],
                 "status": e.get("status", "UNSYNCED"),
                 "ready": not why,
                 "reasons": why,
@@ -321,7 +327,9 @@ def next_jobs(root):
     }
 
 
-def claim(root, k):
+def claim(root, k, expected_input_hash=None):
+    """Reserve one output. A caller that already rendered locally passes the input hash it
+    used, so a concurrent input change refuses the claim instead of mislabelling the output."""
     js = jobs(root)
     j = js[k]
     with mutation(root):
@@ -330,6 +338,8 @@ def claim(root, k):
         if errors:
             raise ValueError("; ".join(errors))
         fp, refs, _ = fingerprint(root, j, s)
+        if expected_input_hash is not None and fp != expected_input_hash:
+            raise ValueError("Inputs changed after the render began; nothing was claimed")
         selected, _ = capability(root, j)
         token = uuid.uuid4().hex
         e = s["jobs"][k]
@@ -365,12 +375,34 @@ def claim(root, k):
             "references": [{**r, "absolute_path": str(local(root, r["path"]))} for r in refs],
             "contract": j,
             "dependency_clips": [s["jobs"][d]["selected"] for d in dependencies(j)],
-            "next": "Execute actual agent image tool or observed Flow UI; record receipt; import real returned file. Do not auto-resubmit after timeout.",
+            "next": NEXT_STEP.get(j["provider"], HANDOFF_STEP),
         }
         event(s, "CLAIM", job_id=k, token=token)
         save(Path(root) / STATE, s)
         save(Path(root) / "work/dispatch" / f"{token}.json", packet)
     return packet
+
+
+def local_render_proof(root, k, data, entry, attempt):
+    """Code jobs accept only a receipt `hsd code render` wrote for this job, inputs and output."""
+    evidence = str(data.get("evidence", ""))
+    handle = str(data.get("handle", ""))
+    if not handle.startswith("local-render:") or not evidence.startswith("work/code_renders/"):
+        raise ValueError("Code jobs take receipts from `hsd code render` only")
+    record_path = local(root, evidence)
+    if not record_path.is_file() or sha(record_path) != data.get("render_receipt_sha256"):
+        raise ValueError("Render receipt is missing or changed: " + evidence)
+    record = load(record_path)
+    if (
+        record.get("status") != "RENDERED"
+        or record.get("job_id") != k
+        or handle != "local-render:" + str(record.get("render_id"))
+        or record.get("input_hash") != attempt.get("input_hash")
+        or record.get("output", {}).get("sha256") != data.get("output_sha256")
+    ):
+        raise ValueError("Render receipt does not describe this attempt's rendered output")
+    if any(a.get("receipt", {}).get("handle") == handle for a in entry["attempts"]):
+        raise ValueError("This render was already receipted by another attempt")
 
 
 def active(s, k, token):
@@ -389,8 +421,10 @@ def receipt(root, k, token, data):
         selected = a["selection"]
         if selected.get("model") and data.get("actual_model") != selected["model"]:
             raise ValueError("Receipt model does not match selected model")
-        if e["provider"] in {"flow", "video"} and data.get("actual_mode") != jobs(root)[k]["mode"]:
+        if e["provider"] in VIDEO_PROVIDERS and data.get("actual_mode") != jobs(root)[k]["mode"]:
             raise ValueError("Receipt requires actual video mode")
+        if e["provider"] == "code":
+            local_render_proof(root, k, data, e, a)
         a["receipt"] = {**data, "recorded_at": now()}
         a["status"] = "SUBMITTED"
         event(s, "RECEIPT", job_id=k, token=token)
@@ -409,6 +443,8 @@ def ingest(root, k, token, source):
         e, a = active(s, k, token)
         if not a.get("receipt"):
             raise ValueError("Record real generation receipt before ingestion")
+        if e["provider"] == "code" and meta["sha256"] != a["receipt"].get("output_sha256"):
+            raise ValueError("Only the rendered output named in the receipt can be ingested")
         fp, _, errors = fingerprint(root, j, s)
         if fp != a["input_hash"] or errors:
             raise ValueError(
@@ -441,9 +477,7 @@ def review(root, k, data):
         candidate = next((c for c in e["candidates"] if c["sha256"] == data.get("sha256")), None)
         if not candidate or sha(local(root, candidate["path"])) != data.get("sha256"):
             raise ValueError("Review hash must match current ingested candidate")
-        required = CHECKS + (
-            ["motion_camera", "join"] if j["provider"] in {"flow", "video"} else []
-        )
+        required = CHECKS + (["motion_camera", "join"] if j["provider"] in VIDEO_PROVIDERS else [])
         checks = data.get("checks", {})
         if any(checks.get(c) not in {"PASS", "FAIL", "UNCERTAIN"} for c in required):
             raise ValueError("Missing semantic checks: " + ",".join(required))
@@ -527,7 +561,7 @@ def accept(root, k):
                 for x in proof["sources"]
             ):
                 raise ValueError("Exact overlay proof missing/stale")
-        if j["provider"] in {"flow", "video"}:
+        if j["provider"] in VIDEO_PROVIDERS:
             if meta["duration_s"] + 1 / meta["fps"] < float(
                 j.get("use_out_s") or j.get("final_edit_duration_s") or 0
             ):

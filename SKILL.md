@@ -1,6 +1,6 @@
 ---
 name: historical-shortfilm-director
-description: Plan and produce evidence-grounded historical short films, including source review, storyboards, reconstruction, continuity and local finishing. Keep critique, prompt-only and maintenance requests within their stated scope.
+description: Plan and produce evidence-grounded historical short films, including source review, storyboards, reconstruction, code-rendered motion, continuity and local finishing. Keep critique, prompt-only and maintenance requests within their stated scope.
 license: MIT
 metadata:
   author: historical-shortfilm-director contributors
@@ -66,8 +66,15 @@ Read [provider capabilities](references/PROVIDER_MODEL.md) and use only the tool
 schemas, account access and capabilities actually available in the current environment.
 This runtime provides no hidden direct generation API or browser implementation.
 For an optional provider, read only its relevant workflow:
-[Flow](references/providers/FLOW_AUTOMATION.md) or
-[image tools](references/providers/IMAGE25_AUTOMATION.md).
+[Flow](references/providers/FLOW_AUTOMATION.md),
+[image tools](references/providers/IMAGE25_AUTOMATION.md) or
+[Claude Code video](references/providers/CLAUDE_CODE_VIDEO.md).
+
+Claude Code makes video by writing programs, not by sampling a video model. Route
+archival-photo motion, document details, titles, maps and graphic resets to `CODE` units:
+write a scene from `hsd code brief`, check stills with `hsd code preview`, then
+`hsd code render` and review its contact sheet like any candidate. A code render moves
+verified pixels and exact text; it never synthesizes imagery or becomes evidence.
 
 Technical decode, file hashes and endpoint metrics supplement semantic/historical review;
 none alone proves that a candidate is acceptable. Bind reviews to actual candidate hashes.

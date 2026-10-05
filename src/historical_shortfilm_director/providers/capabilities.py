@@ -7,6 +7,24 @@ from pathlib import Path
 
 from historical_shortfilm_director.runtime.common import load
 
+HANDOFF_KINDS = {"agent-tool", "agent-image-tool", "browser", "operator"}
+LOCAL_RENDER = "local-render"
+
+
+def observation_errors(caps):
+    """Availability and the runtime's 24-hour freshness policy for one observed slot."""
+    if caps.get("available") is not True:
+        return ["CAPABILITY_UNAVAILABLE"]
+    try:
+        age = (
+            datetime.now(timezone.utc) - datetime.fromisoformat(caps["observed_at"])
+        ).total_seconds()
+    except (ValueError, KeyError, TypeError):
+        return ["CAPABILITY_UNVERIFIED"]
+    if age < -300 or age > 86400 or not caps.get("evidence"):
+        return ["CAPABILITY_STALE"]
+    return []
+
 
 def references(job):
     return list(
@@ -26,18 +44,24 @@ def references(job):
 def capability(root, job):
     """A checked dispatch selection or explicit blockers; no external execution."""
     caps = load(Path(root) / "00_capability_snapshot.json", {}).get(job["provider"], {})
-    if caps.get("available") is not True:
-        return None, ["CAPABILITY_UNAVAILABLE"]
-    try:
-        age = (
-            datetime.now(timezone.utc) - datetime.fromisoformat(caps["observed_at"])
-        ).total_seconds()
-    except (ValueError, KeyError, TypeError):
-        return None, ["CAPABILITY_UNVERIFIED"]
-    if age < -300 or age > 86400 or not caps.get("evidence"):
-        return None, ["CAPABILITY_STALE"]
+    errors = observation_errors(caps)
+    if errors:
+        return None, errors
+    if job["provider"] == "code":
+        # The runtime itself renders code jobs; no external handoff kind applies.
+        if caps.get("execution") != LOCAL_RENDER:
+            return None, ["EXECUTION_UNSUPPORTED"]
+        if job.get("mode") != "CODE":
+            return None, ["CODE_MODE_REQUIRED"]
+        if float(job.get("duration_s") or 0) <= 0:
+            return None, ["DURATION_UNSUPPORTED"]
+        return {
+            "execution": LOCAL_RENDER,
+            "toolchain": caps.get("toolchain", {}),
+            "duration_s": float(job.get("duration_s") or 0),
+        }, []
     execution = caps.get("execution", "browser" if job["provider"] == "flow" else "agent-tool")
-    if execution not in {"agent-tool", "agent-image-tool", "browser", "operator"}:
+    if execution not in HANDOFF_KINDS:
         return None, ["EXECUTION_UNSUPPORTED"]
     if job["provider"] in {"flow", "video"}:
         mode = caps.get("modes", {}).get(job["mode"])

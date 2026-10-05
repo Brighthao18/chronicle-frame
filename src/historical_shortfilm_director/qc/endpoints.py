@@ -102,6 +102,7 @@ def main() -> int:
             "EXTEND",
             "OMNI_EDIT",
             "SKIP_FLOW",
+            "CODE",
         }:
             issues.append(f"unknown Flow mode {mode or '[blank]'}")
         start = get(row, "Start frame ID")
@@ -125,7 +126,8 @@ def main() -> int:
         if mode == "FRAMES" and reach == "R-C" and not bridge:
             issues.append("R-C Frames pair needs bridge/reset consideration")
         m = re.search(r"(\d+(?:\.\d+)?)", get(row, "Duration"))
-        if m:
+        # Generative clip ceilings and Flow duration menus do not bind a local code render.
+        if m and mode != "CODE":
             dur = float(m.group(1))
             if dur > max_dur:
                 issues.append(f"duration exceeds {max_dur:g}s project ceiling")

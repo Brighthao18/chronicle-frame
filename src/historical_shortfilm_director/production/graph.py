@@ -18,6 +18,7 @@ from historical_shortfilm_director.runtime.common import (
     digest,
     mutation,
 )
+from historical_shortfilm_director.providers.code import render_settings
 
 GRAPH = "03_production_graph.json"
 RECEIPT = "03w_graph_compile_receipt.json"
@@ -84,7 +85,16 @@ JOIN_FIELDS = {
     "audio",
     "overlay",
 }
-MODES = {"FRAMES", "START_FRAME", "INGREDIENTS", "EXTEND", "OMNI_EDIT", "T2V", "SKIP_FLOW"}
+MODES = {
+    "FRAMES",
+    "START_FRAME",
+    "INGREDIENTS",
+    "EXTEND",
+    "OMNI_EDIT",
+    "T2V",
+    "SKIP_FLOW",
+    "CODE",
+}
 ROUTES = {
     "SOURCE_LOCKED",
     "CODE_COMPOSITE",
@@ -118,7 +128,16 @@ def fields(row, allowed, name):
 def validate(root, g):
     fields(
         g,
-        {"schema_version", "title", "external_refs", "frames", "units", "joins", "preview"},
+        {
+            "schema_version",
+            "title",
+            "external_refs",
+            "frames",
+            "units",
+            "joins",
+            "preview",
+            "render",
+        },
         "graph",
     )
     if g.get("schema_version") != "3.2":
@@ -241,6 +260,10 @@ def validate(root, g):
             raise ValueError("Extend needs explicit predecessor/source")
         if u["mode"] == "OMNI_EDIT" and not u.get("source_video"):
             raise ValueError("Video edit needs source_video")
+        if u["mode"] == "CODE" and u.get("source_video"):
+            raise ValueError("CODE units animate registered stills, not source video: " + u["id"])
+        if u["mode"] == "CODE" and incoming.get("type") == "FLOW_EXTEND":
+            raise ValueError("A FLOW_EXTEND join cannot target a CODE unit: " + u["id"])
         if u["mode"] != "SKIP_FLOW" and (not u.get("action") or not u.get("camera")):
             raise ValueError("Concrete action and camera required: " + u["id"])
         if u["mode"] == "FRAMES" and u.get("reachability") == "R-D":
@@ -305,6 +328,7 @@ def validate(root, g):
             raise ValueError("Preview dimensions must be even integers")
     if preview.get("audio"):
         local(root, preview["audio"])
+    render_settings(g)
     return g
 
 
@@ -370,6 +394,7 @@ def compile_files(g):
         "OMNI_EDIT": "OMNI_EDIT_LOCAL",
         "T2V": "T2V_RICH",
         "SKIP_FLOW": "SKIP_FLOW",
+        "CODE": "CODE_PROGRAM",
     }
     for u in g["units"]:
         endpoints.append(

@@ -14,7 +14,11 @@ Neutral video jobs require affirmative observed support for conditioning they ne
 Legacy Flow mode declarations retain their old contract; an explicit false capability still blocks.
 
 Supported execution kinds are `agent-tool`, `agent-image-tool`, `browser` and `operator`.
-They describe a handoff, not a direct API integration. Capability observations expire after
+They describe a handoff, not a direct API integration. The `code` slot is different: its
+only execution kind is `local-render`, because the runtime renders an authored program
+itself (`hsd code probe` observes FFmpeg, Pillow and OpenCV) and `CODE` units need nothing
+else. The separate `claude_code` slot (`headless-cli`) records an observed Claude Code CLI
+for optional headless authoring; it never dispatches a job by itself. Capability observations expire after
 24 hours in the existing dispatch policy. Unavailable or stale observations cannot prove that
 a paid request may run. Output budgets require a real authorization reference and a positive
 provider output limit; candidate counts are ceilings, not automatic spending targets.
@@ -27,6 +31,8 @@ filenames remain compatibility identifiers, without selecting a vendor by themse
 Google Flow: browser/operator workflow, [operating reference](providers/FLOW_AUTOMATION.md).
 OpenAI image generation: actual agent-image-tool workflow,
 [operating reference](providers/IMAGE25_AUTOMATION.md). Use the installed tool's current schema.
+Claude Code video: local code-rendered `CODE` units authored interactively or by a headless
+session, [operating reference](providers/CLAUDE_CODE_VIDEO.md).
 Detailed legacy provider wording is retained only as conditional guidance; no static reference
 establishes a current product capability, account entitlement, API or selector.
 

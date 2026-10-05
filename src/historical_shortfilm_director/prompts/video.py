@@ -21,6 +21,7 @@ PROMPT_MODES = {
     "EXTEND_CONTINUITY",
     "OMNI_EDIT_LOCAL",
     "SKIP_FLOW",
+    "CODE_PROGRAM",
 }
 FLOW_TO_PROMPT = {
     "T2V": "T2V_RICH",
@@ -30,6 +31,7 @@ FLOW_TO_PROMPT = {
     "EXTEND": "EXTEND_CONTINUITY",
     "OMNI_EDIT": "OMNI_EDIT_LOCAL",
     "SKIP_FLOW": "SKIP_FLOW",
+    "CODE": "CODE_PROGRAM",
 }
 
 
@@ -228,6 +230,30 @@ def build_prompt(bp: dict[str, str], ep: dict[str, str], mode: str) -> str:
         if end_target:
             parts.append(sent(f"The edited clip should finish in this state: {end_target}"))
 
+    elif mode == "CODE_PROGRAM":
+        parts.append(
+            "Render this unit locally from a reviewed scene program that moves, scales, rotates"
+            " or fades only the verified input assets and exact text; synthesize no new imagery."
+        )
+        end_id = get(ep, "End frame ID")
+        if start_id:
+            parts.append(f"The first frame must reproduce start frame {start_id}.")
+        if end_id:
+            parts.append(f"The final frame must settle on end frame {end_id}.")
+        if keep:
+            parts.append(sent(f"Keep unchanged: {keep}"))
+        if change:
+            parts.append(sent(f"Change only: {change}"))
+        if path:
+            parts.append(sent(path))
+        elif action:
+            parts.append(sent(action))
+        for item in [env, camera, focus, light, timing]:
+            if item:
+                parts.append(sent(item))
+        if end_target:
+            parts.append(sent(f"By the end, settle into this target state: {end_target}"))
+
     if locks and mode != "OMNI_EDIT_LOCAL":
         parts.append(sent(f"Maintain continuity in {locks}"))
     if audio:
@@ -298,6 +324,31 @@ def main() -> int:
             blocks.append(f"### {uid} — SKIP_FLOW\n\nDo not generate this unit in Flow.\n")
             assembly_rows.append(
                 f"| {uid} | {get(ep, 'Parent shot') or '-'} | {get(ep, 'Duration') or '-'} | SKIP_FLOW | - | - | - | deterministic / post route |"
+            )
+            continue
+
+        if flow_mode == "CODE" or mode == "CODE_PROGRAM":
+            if flow_mode != "CODE" or mode != "CODE_PROGRAM":
+                errors.append(f"{uid}: only CODE units use the CODE_PROGRAM contract")
+                continue
+            blocks.append(
+                "\n".join(
+                    [
+                        f"### {uid} — CODE / CODE_PROGRAM",
+                        "",
+                        "**Code render contract**",
+                        "",
+                        "```text",
+                        build_prompt(bp, ep, mode),
+                        "```",
+                        "",
+                        "Author a scene program for `hsd code render`; this contract is not a"
+                        " prompt for a video generator.",
+                    ]
+                )
+            )
+            assembly_rows.append(
+                f"| {uid} | {get(ep, 'Parent shot') or '-'} | {get(ep, 'Duration') or '-'} | CODE | {get(ep, 'Start frame ID') or '-'} | {get(ep, 'End frame ID') or '-'} | - | {get(bp, 'Story beat') or get(bp, 'Visual premise') or '-'} |"
             )
             continue
 

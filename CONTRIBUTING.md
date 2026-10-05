@@ -55,6 +55,10 @@ If a provider needs agent/browser/operator handoff, document precisely that limi
 provider policy and operational references under `providers` and `references/providers`. Keep
 vendor decisions out of generic graph/state/QC. Test missing and stale observations, unsupported
 conditioning, reference/duration bounds and receipt mismatches with deterministic synthetic data.
+Local renderers such as the [Claude Code video](references/providers/CLAUDE_CODE_VIDEO.md) route
+follow the same rules: observe the toolchain, render before claiming, record what actually ran, keep
+scene formats declarative and any execution of authored code an explicit opt-in. Test agent CLIs
+with an offline stand-in, never a live paid session.
 
 ## Add a migration
 

@@ -37,6 +37,7 @@ ChronicleFrame 把历史研究与可复查的短片制作流程连接起来。Ag
 | 外部生成请求超时，结果不明确 | 保留有效任务与回执，不自动重复状态不明的请求 |
 | 文件通过技术检查，却表达了错误的史实 | 分开进行技术质检、语义审查和人工批准 |
 | 流程依赖某家供应商或某个历史项目 | 使用实测能力快照、可选 JSON 项目配置和离线核心 |
+| 档案静帧需要运动、标题或文献细节，又不能被生成模型改写 | Claude Code 编写场景程序，由运行时在本地渲染：像素与文字精确，回执绑定哈希 |
 
 公开仓库名称为 **ChronicleFrame**。既有 Skill、Python 包和兼容入口仍使用
 `historical-shortfilm-director`，命令仍为 `hsd`。
@@ -136,6 +137,7 @@ hsd init --title "档案中的门槛" --profile generic --dir work/film
 | `hsd runtime` | 记录任务申请、回执、下载、审查与接受 |
 | `hsd qc` | 检查结构和完整性；`--media` 加入媒体检查 |
 | `hsd animatic` | 从静帧生成动态分镜预览 |
+| `hsd code` | 代码渲染单元的写作说明、预览、渲染与无头创作（[Claude Code 视频](#claude-code-视频)） |
 | `hsd assemble` | 准备拼接；`--execute` 执行编码 |
 | `hsd migrate` | 预览旧格式迁移；`--apply` 实际修改 |
 | `hsd doctor` | 检查本地环境与媒体前提 |
@@ -149,11 +151,34 @@ hsd init --title "档案中的门槛" --profile generic --dir work/film
 申请任务 → 真实外部执行 → 回执 → 下载登记 → 审查 → 接受
 ```
 
-命令行负责记录这些状态，本身不会生成图片或控制浏览器。具体命令和 JSON 合约见
+命令行负责记录这些状态，本身不会生成图片或控制浏览器。唯一的本地例外是代码渲染单元：
+此时运行时本身就是渲染器，并记录它实际观察到的结果。具体命令和 JSON 合约见
 [执行协议](references/EXECUTION_PROTOCOL.md)。已接受镜头先用
 `python scripts/compile_direct_assembly.py <项目>` 编译拼接清单，再执行拼接。
 兼容脚本保留字幕和最终音频混合功能；最终混音需要真实画面锁定批准。
 详见[本地后期](references/LOCAL_FINISHING.md)。
+
+## Claude Code 视频
+
+Claude Code 通过编写程序来生成视频。在制作图中把单元标为 `"mode": "CODE"`，
+Claude Code 就为它编写 `hsd-scene/1` 场景：由关键帧驱动的图像、文字和矩形图层。
+运行时用 Pillow 和 FFmpeg 在本地渲染，让档案照片产生运动、文献显出细节、标题保持精确，
+而没有任何模型改写源图像素。
+
+```sh
+hsd code probe work/film
+hsd code brief work/film FLOW_U4
+hsd code preview work/film FLOW_U4 --program programs/U4.scene.json
+hsd code render work/film FLOW_U4 --program programs/U4.scene.json
+```
+
+`probe` 每个授权批次观察一次本地渲染环境；`brief` 给出合约、精确格式、已核实输入和场景格式；
+`preview` 只生成静帧和联系表，不记录任何状态；`render` 先验证完整片段再申请尝试，回执绑定
+程序、输入与输出哈希，并留下联系表和审查模板，照常进行明确的审查与接受。相同工具链下重新渲染
+逐字节一致。用于地图或图表的 Python 程序须显式开启。在终端或其他 Agent 中，`hsd code author`
+每个场景运行一次有预算上限、只能使用文件工具的 `claude -p` 会话。
+[Claude Code 视频指南](references/providers/CLAUDE_CODE_VIDEO.md) ·
+[离线示例](examples/claude-code-video/README.md)
 
 ## 作为 Agent Skill 安装
 
@@ -171,7 +196,8 @@ Skill 根据请求处理研究、脚本、提示词、评论和制作，详细�
 
 Google Flow 保留浏览器或操作者交接方式，OpenAI 图像工具保留 Agent 工具交接方式。
 没有虚构直接 API、内置凭据或固定模型名称假设。`IMG25_` / `FLOW_` 等旧标识继续作为
-兼容格式；通用项目采用中性路线与 `image` / `video` 能力槽位。
+兼容格式；通用项目采用中性路线与 `image` / `video` 能力槽位。代码渲染单元使用本地
+`code` 槽位，无头创作另需单独观察的 `claude_code` 命令行工具。
 详见[供应商模型](references/PROVIDER_MODEL.md)。
 
 项目规则使用 JSON 配置。[JNU 校门示例](examples/jnu-gate/README.md) 演示可选高级配置，
