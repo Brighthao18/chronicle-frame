@@ -30,8 +30,8 @@ Changelog = "https://github.com/Brighthao18/chronicle-frame/blob/main/CHANGELOG.
 
 [project.optional-dependencies]
 media = ["Pillow>=10", "numpy>=1.26", "opencv-python-headless>=4.8"]
-test = ["pytest>=8", "Pillow>=10", "PyYAML>=6"]
-dev = ["pytest>=8", "Pillow>=10", "PyYAML>=6", "ruff>=0.11", "build>=1.2"]
+test = ["pytest>=8", "Pillow>=10", "numpy>=1.26", "PyYAML>=6"]
+dev = ["pytest>=8", "Pillow>=10", "numpy>=1.26", "PyYAML>=6", "ruff>=0.11", "build>=1.2"]
 
 [project.scripts]
 hsd = "historical_shortfilm_director.cli:main"

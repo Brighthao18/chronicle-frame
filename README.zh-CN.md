@@ -89,20 +89,24 @@ FFmpeg 使用系统包管理器安装；也可通过 `HSD_FFMPEG` 或项目 `loc
 ## 从证据到已接受影片
 
 ```mermaid
-flowchart LR
-    E[来源与证据台账] --> A[Agent 研究与叙事]
-    P[可选项目配置] --> G[制作图]
-    A --> G
-    G --> S[状态、人工决策与素材登记]
-    S --> H[真实工具或操作者交接]
-    H --> R[回执与下载的候选文件]
-    R --> Q[技术质检与语义审查]
-    Q --> S
-    S --> L[本地预览、拼接与后期]
+flowchart TB
+    subgraph PLAN["01 · 证据与规划"]
+        direction LR
+        E[来源与历史主张] --> A[故事与分镜] --> G[制作图]
+    end
+    subgraph EXEC["02 · 留有记录的执行"]
+        direction LR
+        S[人工决策与任务状态] --> H[真实工具或操作者] --> R[回执与素材登记]
+    end
+    subgraph FINISH["03 · 审查与后期"]
+        direction LR
+        Q[技术质检与语义审查] --> I[已接受素材] --> L[预览与拼接]
+    end
+    PLAN --> EXEC --> FINISH
     classDef source fill:#f4eee3,stroke:#b08b4f,color:#292524
     classDef runtime fill:#edf2f4,stroke:#64748b,color:#1e293b
-    class E,A,P source
-    class G,S,H,R,Q,L runtime
+    class E,A,G source
+    class S,H,R,Q,I,L runtime
 ```
 
 建立真实项目：

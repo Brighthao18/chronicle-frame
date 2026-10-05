@@ -94,20 +94,24 @@ bundle also contains the Skill, documentation and examples.
 ## From evidence to an accepted film
 
 ```mermaid
-flowchart LR
-    E[Sources and evidence ledger] --> A[Agent: research and story]
-    P[Optional project profile] --> G[Production graph]
-    A --> G
-    G --> S[State, gates and asset registry]
-    S --> H[Real tool or operator handoff]
-    H --> R[Receipt and downloaded candidate]
-    R --> Q[Technical QC and semantic review]
-    Q --> S
-    S --> L[Local preview, assembly and finishing]
+flowchart TB
+    subgraph PLAN["01 · Evidence and planning"]
+        direction LR
+        E[Sources and claims] --> A[Story and storyboard] --> G[Production graph]
+    end
+    subgraph EXEC["02 · Recorded execution"]
+        direction LR
+        S[Gates and job state] --> H[Tool or operator] --> R[Receipts and assets]
+    end
+    subgraph FINISH["03 · Review and finishing"]
+        direction LR
+        Q[Technical and semantic QC] --> I[Accepted assets] --> L[Preview and assembly]
+    end
+    PLAN --> EXEC --> FINISH
     classDef source fill:#f4eee3,stroke:#b08b4f,color:#292524
     classDef runtime fill:#edf2f4,stroke:#64748b,color:#1e293b
-    class E,A,P source
-    class G,S,H,R,Q,L runtime
+    class E,A,G source
+    class S,H,R,Q,I,L runtime
 ```
 
 Start a real project:

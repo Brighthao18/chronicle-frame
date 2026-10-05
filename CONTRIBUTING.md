@@ -16,7 +16,8 @@ python -m ruff format --check .
 hsd validate --skill .
 ```
 
-Fast tests use synthetic inputs and need no account or FFmpeg. Install `.[dev,media]` and an
+Fast tests use synthetic inputs and need no account or FFmpeg. The test/development extras include
+Pillow and NumPy for lossless pixel checks; OpenCV remains in the media extra. Install `.[dev,media]` and an
 external FFmpeg for `python -m pytest -m slow`. Real media tests are separate from PR checks.
 Legacy suites `scripts/self_test_v31.py` and `scripts/self_test_v32.py` remain during migration;
 their real-media dependencies are optional and their assertions map to the normal test layout.
