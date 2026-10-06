@@ -7,6 +7,7 @@ import json
 import re
 from pathlib import Path
 from historical_shortfilm_director.runtime.common import plan_allowed, identifier, load
+from historical_shortfilm_director.providers.code import render_settings
 
 
 def norm(s: str) -> str:
@@ -77,7 +78,11 @@ def parse_prompt_pack(path: Path) -> dict[str, str]:
         uid = m.group(1).strip()
         end = heads[i + 1].start() if i + 1 < len(heads) else len(text)
         block = text[m.end() : end]
-        pm = re.search(r"\*\*Paste-ready Flow prompt\*\*\s*```text\s*(.*?)\s*```", block, re.S)
+        pm = re.search(
+            r"\*\*(?:Paste-ready Flow prompt|Code render contract)\*\*\s*```text\s*(.*?)\s*```",
+            block,
+            re.S,
+        )
         if pm:
             out[uid] = pm.group(1).strip()
     return out
@@ -122,6 +127,7 @@ def main() -> int:
     rows = parse_table(ep, "Unit")
     prompts = parse_prompt_pack(root / a.prompts)
     refs = registry_paths(root)
+    code_format = render_settings(load(root / "03_production_graph.json", {}))
     joins = []
     if (root / a.joins).exists():
         try:
@@ -162,8 +168,10 @@ def main() -> int:
         dep = []
         if get(jin, "Join type").upper() == "FLOW_EXTEND":
             dep = [get(jin, "From unit")]
+        # CODE units are rendered locally from an authored program, whatever the generator.
+        unit_provider = "code" if mode == "CODE" else provider
         job = {
-            "provider": provider,
+            "provider": unit_provider,
             "job_id": f"FLOW_{uid}",
             "order": idx,
             "unit": uid,
@@ -197,11 +205,13 @@ def main() -> int:
             "join_out": get(jout, "Join"),
             "join_out_type": get(jout, "Join type"),
             "dependencies": [x for x in dep if x],
-            "candidate_dir": f"generated/{provider}_candidates/{uid}",
-            "approved_output": f"generated/{provider}_approved/{uid}.mp4",
+            "candidate_dir": f"generated/{unit_provider}_candidates/{uid}",
+            "approved_output": f"generated/{unit_provider}_approved/{uid}.mp4",
             "human_gate": human_gate,
             "status": "QUEUED" if prompt else "HOLD_PROMPT_MISSING",
         }
+        if unit_provider == "code":
+            job.update(code_format)
         jobs.append(job)
     payload = {
         "schema_version": "3.1",
@@ -214,7 +224,12 @@ def main() -> int:
         "notes": [
             "Verify live Flow mode/model/duration availability at execution time.",
             "If browser automation is unavailable, use 06p_flow_operator_pack.html.",
-        ],
+        ]
+        + (
+            ["Provider `code` jobs render locally: author a scene, then run `hsd code render`."]
+            if any(j["provider"] == "code" for j in jobs)
+            else []
+        ),
     }
     (root / a.json_output).write_text(
         json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"

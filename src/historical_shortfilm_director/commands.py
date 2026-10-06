@@ -39,6 +39,7 @@ MODULES = {
     "build_review_board": "reviews.board",
     "build_review_packet": "reviews.packet",
     "compile_flow_operator_pack": "providers.flow.operator_pack",
+    "code_video": "providers.code.command",
     "check_dependencies": "dependencies",
     "validate_skill": "validation",
     "upgrade_project_v110": "migrations.legacy.upgrade_project_v110",

@@ -67,7 +67,68 @@ def parser():
     migrate.add_argument("project_dir")
     migrate.add_argument("--apply", action="store_true")
     sub.add_parser("doctor", help="Read local dependency availability")
+    code = sub.add_parser(
+        "code", help="Claude Code video: brief, preview, render and author code jobs locally"
+    )
+    actions = code.add_subparsers(dest="code_command", required=True)
+    probe = actions.add_parser("probe", help="Observe the local renderer for code jobs")
+    probe.add_argument("project_dir")
+    probe.add_argument(
+        "--claude", action="store_true", help="Also observe the Claude Code CLI for `author`"
+    )
+    for name, help_text in {
+        "brief": "Write the authoring brief for one code job (saved under work/code_briefs/)",
+        "preview": "Render full-resolution stills and a contact sheet; records nothing",
+        "render": "Render one attempt locally, record its receipt and ingest it for review",
+        "author": "Run one budgeted headless Claude Code session that writes a scene",
+    }.items():
+        action = actions.add_parser(name, help=help_text)
+        action.add_argument("project_dir")
+        action.add_argument("job_id")
+        if name in {"preview", "render"}:
+            action.add_argument(
+                "--program", required=True, help="Project-relative scene or program"
+            )
+        if name == "preview":
+            action.add_argument("--at", type=float, nargs="+", metavar="SECONDS")
+        if name == "render":
+            action.add_argument("--author", help="Who or what wrote the program, for the receipt")
+        if name == "author":
+            action.add_argument("--render", action="store_true", help="Render the scene it writes")
+            action.add_argument("--model", help="Model alias or name passed to Claude Code")
+            action.add_argument("--timeout", type=int, default=900, metavar="SECONDS")
     return command
+
+
+def code_command(root, args):
+    """`hsd code ...`; generation stays an explicit, recorded and reviewable operation."""
+    if args.code_command == "probe":
+        from .providers.code.render import probe
+
+        result = {"code": probe(root)}
+        if args.claude:
+            from .providers.code.claude import probe_claude
+
+            result["claude_code"] = probe_claude(root)
+        emit(result)
+        return 0 if all(item["available"] for item in result.values()) else 2
+    if args.code_command == "brief":
+        from .providers.code.brief import write_brief
+
+        print(write_brief(root, args.job_id)[1], end="")
+    elif args.code_command == "preview":
+        from .providers.code.render import preview
+
+        emit(preview(root, args.job_id, args.program, args.at))
+    elif args.code_command == "render":
+        from .providers.code.render import render
+
+        emit(render(root, args.job_id, args.program, args.author))
+    else:
+        from .providers.code.claude import author
+
+        emit(author(root, args.job_id, args.render, args.model, args.timeout))
+    return 0
 
 
 def main(argv=None):
@@ -163,6 +224,8 @@ def main(argv=None):
             return legacy_main("assemble_direct", values)
         elif args.command == "runtime":
             return legacy_main("production_runtime", [str(root), *args.arguments])
+        elif args.command == "code":
+            return code_command(root, args)
         elif args.command == "migrate":
             key = "upgrade_project_v" + args.revision.replace(".", "")
             return legacy_main(key, [str(root), *(["--apply"] if args.apply else [])])

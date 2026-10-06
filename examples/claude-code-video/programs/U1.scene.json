@@ -1,0 +1,44 @@
+{
+  "schema": "hsd-scene/1",
+  "background": "#101216",
+  "notes": "Push toward the red square; it ends centred, then a thin outline settles around it.",
+  "layers": [
+    {
+      "id": "sheet",
+      "type": "image",
+      "asset": "PLATE",
+      "keys": [
+        {"t": 0, "scale": 1.0, "ax": 0.5, "ay": 0.5},
+        {"t": 3.2, "scale": 2.5, "ax": 0.797, "ay": 0.75, "ease": "in_out"}
+      ]
+    },
+    {
+      "id": "outline",
+      "type": "rect",
+      "color": "#F2D27A",
+      "outline": 0.006,
+      "x": 0.33,
+      "y": 0.2,
+      "w": 0.34,
+      "h": 0.6,
+      "keys": [
+        {"t": 3.2, "opacity": 0},
+        {"t": 3.6, "opacity": 1, "ease": "out"}
+      ]
+    },
+    {
+      "id": "caption",
+      "type": "text",
+      "text": "Synthetic study",
+      "size": 0.05,
+      "color": "#22262E",
+      "ax": 0,
+      "x": 0.05,
+      "y": 0.9,
+      "keys": [
+        {"t": 0.6, "opacity": 0},
+        {"t": 1.3, "opacity": 1, "ease": "out"}
+      ]
+    }
+  ]
+}

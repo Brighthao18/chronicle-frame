@@ -29,3 +29,9 @@ jobs:
       - run: hsd prepare work/demo
       - run: hsd animatic work/demo
       - run: hsd qc work/demo --media
+      - run: python examples/claude-code-video/create_demo.py work/code-demo
+      - run: hsd prepare work/code-demo
+      - run: hsd code probe work/code-demo
+      - run: hsd code brief work/code-demo FLOW_U1
+      - run: hsd code preview work/code-demo FLOW_U1 --program programs/U1.scene.json
+      - run: hsd code preview work/code-demo FLOW_U2 --program programs/U2.scene.json

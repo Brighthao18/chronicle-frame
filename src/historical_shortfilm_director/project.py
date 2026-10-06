@@ -236,7 +236,12 @@ def main() -> int:
                     "image_output_limit": None,
                     "video_output_limit": None,
                     "flow_output_limit": None,
+                    "code_output_limit": None,
+                    "claude_code_session_limit": None,
+                    "claude_code_max_budget_usd": None,
+                    "claude_code_share_inputs": False,
                 },
+                "code_render": {"python_programs": False, "timeout_s": 600},
             },
             ensure_ascii=False,
             indent=2,
@@ -250,6 +255,8 @@ def main() -> int:
             "image": {"available": False},
             "video": {"available": False},
             "flow": {"available": False},
+            "code": {"available": False},
+            "claude_code": {"available": False},
             "local": {},
         }
     )

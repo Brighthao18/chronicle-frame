@@ -7,7 +7,7 @@ import argparse
 import csv
 import re
 from pathlib import Path
-from historical_shortfilm_director.runtime.common import plan_allowed, local
+from historical_shortfilm_director.runtime.common import plan_allowed, local, load
 
 
 def norm(s: str) -> str:
@@ -73,6 +73,13 @@ def main() -> int:
     joins = [r for r in parse(jp, "Join") if get(r, "Join")]
     by_from = {get(j, "From unit"): j for j in joins if get(j, "From unit")}
     by_to = {get(j, "To unit"): j for j in joins if get(j, "To unit")}
+    # Each provider writes accepted clips to its own path; read it from the compiled queue.
+    queued = {
+        j.get("unit"): j
+        for j in load(root / "06o_flow_job_queue.json", {"jobs": []}).get("jobs", [])
+        if j.get("unit")
+    }
+    schedule = None
 
     queue = [
         "# Flow Generation Queue — v3",
@@ -112,16 +119,21 @@ def main() -> int:
         overlay = get(jout, "Post overlay at join") or get(jin, "Post overlay at join")
         audio = get(jout, "Audio bridge") or get(jin, "Audio bridge")
         fallback = get(u, "Bridge/reset") or get(jout, "Fallback") or get(jin, "Fallback")
+        job = queued.get(uid, {})
         source_clip = (
-            f"renders/{uid}.mp4" if mode == "SKIP_FLOW" else f"generated/flow_approved/{uid}.mp4"
+            f"renders/{uid}.mp4"
+            if mode == "SKIP_FLOW"
+            else job.get("approved_output") or f"generated/flow_approved/{uid}.mp4"
         )
         clip = local(root, source_clip)
         if not clip.is_file():
             status = "HOLD_MEDIA_MISSING"
         if mode != "SKIP_FLOW":
-            from historical_shortfilm_director.runtime.engine import next_jobs
+            if schedule is None:
+                from historical_shortfilm_director.runtime.engine import next_jobs
 
-            entry = next((x for x in next_jobs(root)["jobs"] if x["job_id"] == "FLOW_" + uid), None)
+                schedule = {x["job_id"]: x for x in next_jobs(root)["jobs"]}
+            entry = schedule.get(job.get("job_id") or "FLOW_" + uid)
             if not entry or entry["reasons"] != ["ACCEPTED"]:
                 status = "HOLD_MEDIA_NOT_ACCEPTED"
         manifest_rows.append(

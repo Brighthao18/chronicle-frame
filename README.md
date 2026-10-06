@@ -38,6 +38,7 @@ reconstruction. You can plan and render local media without a cloud-generation a
 | An external request times out with an uncertain result | Durable claims and receipts; ambiguous submissions remain active rather than being silently repeated |
 | A technical check passes but the scene tells the wrong story | Separate technical QC, semantic review and human approval |
 | A workflow assumes one provider or one historical project | Observed provider capabilities, optional JSON profiles and an offline core |
+| Archival stills need motion, titles or document details without generative drift | Claude Code writes scene programs that the runtime renders locally: exact pixels, exact text, hash-bound receipts |
 
 The project preserves the established `historical-shortfilm-director` Skill and Python
 package names, and the `hsd` command. **ChronicleFrame** is the public repository name.
@@ -141,6 +142,7 @@ motion** and **picture lock**. A passing media test cannot approve any of them.
 | `hsd runtime` | Claim jobs and record receipts, ingestion, review and acceptance |
 | `hsd qc` | Check graph/profile/file integrity; add `--media` for media checks |
 | `hsd animatic` | Build a still-based preview |
+| `hsd code` | Brief, preview, render or headlessly author code-rendered units ([Claude Code video](#claude-code-video)) |
 | `hsd assemble` | Prepare assembly; add `--execute` to encode |
 | `hsd migrate` | Preview a retained schema migration; add `--apply` to change it |
 | `hsd doctor` | Inspect local runtime and media prerequisites |
@@ -155,11 +157,38 @@ claim → real external operation → receipt → ingest → review → accept
 ```
 
 The CLI records this lifecycle; it does not generate images or control a browser.
-See [the execution protocol](references/EXECUTION_PROTOCOL.md) for command forms and
-JSON contracts. For accepted clips, compile the assembly manifest with
+Code-rendered units are the one local exception: there the runtime is the renderer and
+records what it observed. See [the execution protocol](references/EXECUTION_PROTOCOL.md)
+for command forms and JSON contracts. For accepted clips, compile the assembly manifest with
 `python scripts/compile_direct_assembly.py <project>` before assembly. Subtitle and
 final audio-mix entry points remain available through the compatibility scripts;
 final mixing requires actual picture-lock approval. [Local finishing guide](references/LOCAL_FINISHING.md).
+
+## Claude Code video
+
+Claude Code generates video by writing programs. Mark a unit `"mode": "CODE"` in the
+production graph and Claude Code writes an `hsd-scene/1` scene for it: image, text and
+rectangle layers moved by keyframes. The runtime renders the scene locally with Pillow and
+FFmpeg. Archival photographs gain motion, documents reveal their details and titles stay
+exact, while no model repaints a single source pixel.
+
+```sh
+hsd code probe work/film
+hsd code brief work/film FLOW_U4
+hsd code preview work/film FLOW_U4 --program programs/U4.scene.json
+hsd code render work/film FLOW_U4 --program programs/U4.scene.json
+```
+
+`probe` observes the local renderer once per wave. `brief` gives Claude Code the contract,
+exact format, verified inputs and the scene format. `preview` writes stills and a contact
+sheet and records nothing. `render` verifies the whole clip before it claims an attempt,
+binds its receipt to the program, input and output hashes, and leaves a contact sheet and
+review template for the usual explicit review and acceptance. With the same toolchain a
+re-render is byte-identical. Python programs for procedural maps or charts are an explicit
+opt-in. From a terminal or another agent, `hsd code author` runs one budgeted
+`claude -p` session per scene, limited to file tools.
+[Claude Code video guide](references/providers/CLAUDE_CODE_VIDEO.md) ·
+[offline example](examples/claude-code-video/README.md)
 
 ## Install as an Agent Skill
 
@@ -183,8 +212,9 @@ capabilities block dispatch while local preparation remains available.
 Google Flow retains a browser/operator workflow; OpenAI image tools retain an
 agent-tool workflow. There are no invented direct APIs, stored credentials or fixed
 model-name assumptions. Legacy `IMG25_` / `FLOW_` identifiers remain compatibility
-aliases. Generic projects use neutral routes and `image` / `video` capability slots.
-[Provider model](references/PROVIDER_MODEL.md).
+aliases. Generic projects use neutral routes and `image` / `video` capability slots;
+code-rendered units use the local `code` slot, and headless authoring the separately
+observed `claude_code` CLI. [Provider model](references/PROVIDER_MODEL.md).
 
 Project-specific policy lives in JSON profiles. The optional
 [JNU gate example](examples/jnu-gate/README.md) demonstrates an advanced historical

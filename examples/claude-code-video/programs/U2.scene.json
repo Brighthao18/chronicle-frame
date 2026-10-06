@@ -1,0 +1,29 @@
+{
+  "schema": "hsd-scene/1",
+  "notes": "GRAPHIC_RESET: a dark panel wipes right to left over the sheet; the caption sits on the panel.",
+  "layers": [
+    {"id": "sheet", "type": "image", "asset": "PLATE", "scale": 1.0},
+    {
+      "id": "panel",
+      "type": "rect",
+      "color": "#101216",
+      "y": 0,
+      "h": 1,
+      "keys": [
+        {"t": 0.2, "x": 1.0, "w": 0.0},
+        {"t": 1.4, "x": 0.0, "w": 1.0, "ease": "in_out"}
+      ]
+    },
+    {
+      "id": "caption",
+      "type": "text",
+      "text": "Synthetic study\nno historical claim",
+      "size": 0.06,
+      "align": "center",
+      "keys": [
+        {"t": 1.5, "opacity": 0},
+        {"t": 2.1, "opacity": 1, "ease": "out"}
+      ]
+    }
+  ]
+}

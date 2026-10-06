@@ -5,6 +5,16 @@ credentials or implement authenticated provider APIs. Treat profiles, plans and 
 as untrusted inputs; preserve path containment, safe argument-vector subprocess calls, hash checks
 and explicit state transitions. Never use shell interpolation to execute supplied project data.
 
+Code-rendered video keeps that boundary. `hsd-scene/1` scenes are data and are rendered without
+executing anything they contain. Python render programs are code: they run only after a project
+sets `code_render.python_programs` to `true`, in isolated interpreter mode, in a scratch directory,
+with a minimal environment (no inherited credentials) and a time limit. That is not a sandbox; the
+program has the user's file-system permissions, so review it first and never enable it for an
+untrusted project. `hsd code author` resolves the Claude Code CLI from `HSD_CLAUDE` or `PATH`, never
+from project files, refuses to run nested inside a Claude Code session, and restricts each session
+to file tools in its own work directory. Its brief is sent to the model; input images are shared
+only when `claude_code_share_inputs` is `true`.
+
 ## Reporting code vulnerabilities
 
 Use [GitHub private vulnerability reporting](https://github.com/Brighthao18/chronicle-frame/security/advisories/new)
